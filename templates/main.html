@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <title>Plagiarism Checker</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #d9534f;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .btn-group {
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+        }
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: left;
+        }
+        .result a {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .result a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+          <a class="navbar-brand" href="/">Plagarism Checker</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <a style="margin-left: 61%;" class="navbar-brand" href="/">File-Similarities</a>
+          <a class="navbar-brand" href="/main">Text-Similarities</a>
+         
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Plagiarism Checker</h1>
+
+        <div class="btn-group">
+            <button id="offlineMode" class="btn btn-primary active">Offline Mode</button>
+            <button id="onlineMode" class="btn btn-primary">Online Mode</button>
+        </div>
+
+        <!-- Offline Mode -->
+        <div id="offlineSection">
+            <textarea id="text1" placeholder="Enter first text here..."></textarea>
+            <textarea id="text2" placeholder="Enter second text here..."></textarea>
+            <button id="checkOffline" class="btn btn-success">Check Similarity</button>
+        </div>
+
+        <!-- Online Mode -->
+        <div id="onlineSection" style="display: none;">
+            <textarea id="textOnline" placeholder="Enter text here OR upload a PDF..."></textarea>
+            <input type="file" id="fileUpload" accept=".pdf,.docx,.txt"/>
+            <button id="checkOnline" class="btn btn-success">Search Online</button>
+        </div>
+
+        <div class="result"></div>
+        
+        <button id="reloadPage" class="btn btn-danger">Reload</button>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            // Toggle between offline and online modes
+            $("#offlineMode").click(function(){
+                $("#offlineSection").show();
+                $("#onlineSection").hide();
+                $(".btn-primary").removeClass("active");
+                $(this).addClass("active");
+                $(".result").empty();
+            });
+
+            $("#onlineMode").click(function(){
+                $("#offlineSection").hide();
+                $("#onlineSection").show();
+                $(".btn-primary").removeClass("active");
+                $(this).addClass("active");
+                $(".result").empty();
+            });
+
+            // Offline similarity check
+            $('#checkOffline').click(function(){
+                var text1 = $('#text1').val();
+                var text2 = $('#text2').val();
+                
+                if (!text1 || !text2) {
+                    $('.result').html('<p style="color:red;">Please enter text in both boxes.</p>');
+                    return;
+                }
+
+                $.ajax({
+                    url: "/send",
+                    type: "POST",
+                    data: { text1: text1, text2: text2 },
+                    success: function(response) {
+                        if (response.similarity !== undefined) {
+        $('.result').html(`
+            <h2>Similarity: ${response.similarity_text}</h2>
+            <p>${response.message}</p>
+        `);
+    } else {
+        $('.result').html('<p style="color:red;">Could not calculate similarity.</p>');
+    }
+                    },
+                    error: function() {
+                        $('.result').html('<p style="color:red;">Error checking similarity.</p>');
+                    }
+                });
+            });
+
+            // Online plagiarism check
+            $('#checkOnline').click(function(){
+                var text = $('#textOnline').val();
+                var file = $('#fileUpload')[0].files[0];
+                var formData = new FormData();
+
+                if (file) {
+                    formData.append("file", file);
+                } else if (text.trim() !== "") {
+                    formData.append("text", text);
+                } else {
+                    $('.result').html('<p style="color:red;">Enter text or upload a PDF.</p>');
+                    return;
+                }
+
+                $.ajax({
+                    url: "/check_plagiarism",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.matched_urls && response.matched_urls.length > 0) {
+                            var resultHTML = "<h2>Matching Sources:</h2>";
+                            response.matched_urls.forEach(function(url) {
+                                resultHTML += `<a href="${url.link}" target="_blank">${url.title}</a>`;
+                            });
+                            $('.result').html(resultHTML);
+                        } else {
+                            $('.result').html('<p>No plagiarism detected.</p>');
+                        }
+                    },
+                    error: function() {
+                        $('.result').html('<p style="color:red;">Error checking online plagiarism.</p>');
+                    }
+                });
+            });
+
+            // Reload page button
+            $("#reloadPage").click(function() {
+                location.reload();
+            });
+        });
+    </script>
+</body>
+</html>

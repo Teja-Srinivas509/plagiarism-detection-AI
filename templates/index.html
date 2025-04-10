@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="col" style="margin-left: 15%; padding: 20px; max-width: 600px; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <form action="/compare" enctype="multipart/form-data" method="post" style="display: flex; flex-direction: column; gap: 10px;">
+            
+            <label for="file1" style="font-weight: bold;">Upload File #1</label>
+            <input type="file" id="file1" name="file1" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <label for="file2" style="font-weight: bold;">Upload File #2</label>
+            <input type="file" id="file2" name="file2" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <input type="submit" value="Submit" style="background-color: #007bff; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">
+        </form>
+    </div>
+
+    <style>
+        @media (max-width: 768px) {
+            .col {
+                margin-left: 5%;
+                max-width: 90%;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            input[type="file"] {
+                width: 100%;
+            }
+            input[type="submit"] {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .col {
+                margin-left: 0;
+                padding: 15px;
+            }
+            input[type="file"], input[type="submit"] {
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+    </style>
+
+{% endblock %}
