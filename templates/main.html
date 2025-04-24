@@ -8,84 +8,88 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
     <title>Plagiarism Checker</title>
-    <style>
-        body {
-            background-color: #f9f9f9;
-            font-family: 'Josefin Sans', sans-serif;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+   <style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Josefin Sans', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 90%;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    h1 {
+        color: #d9534f;
+        margin-bottom: 15px;
+        font-size: 6vw;
+    }
+    textarea, input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+    }
+    .btn-group {
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    button {
+        padding: 10px 15px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        margin: 5px;
+        white-space: nowrap;
+    }
+    .result {
+        margin-top: 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+    }
+    .result a {
+        display: block;
+        color: #007bff;
+        text-decoration: none;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+    .result a:hover {
+        text-decoration: underline;
+    }
+
+    /* Media Queries for smaller screens */
+    @media (max-width: 576px) {
         h1 {
-            color: #d9534f;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        textarea, input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .btn-group {
-            margin-bottom: 15px;
+            font-size: 7vw;
         }
         button {
-            padding: 10px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-            margin: 5px;
+            width: 100%;
         }
-        .btn-primary {
-            background: #007bff;
-            color: white;
+        .btn-group {
+            flex-direction: column;
         }
-        .btn-primary:hover {
-            background: #0056b3;
+        .navbar-brand {
+            font-size: 1rem;
         }
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-        .btn-success:hover {
-            background: #218838;
-        }
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            text-align: left;
-        }
-        .result a {
-            display: block;
-            color: #007bff;
-            text-decoration: none;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .result a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    }
+</style>
+
 </head>
 <body>
     <header>
