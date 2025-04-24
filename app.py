@@ -33,8 +33,8 @@ lemmatizer = WordNetLemmatizer()
 plagiarism_checker = BERTPlagiarismChecker()
 
 # Google Custom Search API
-GOOGLE_API_KEY = "AIzaSyAQu1cit5tMW5oX1ZvQXy947MwCQt2U0Nw"
-SEARCH_ENGINE_ID = "103b19c7f153f4eb8"
+GOOGLE_API_KEY = "USE YOUR API KEY"
+SEARCH_ENGINE_ID = "USE YOUR SEARCH ID"
 
 # ------------------ Helper Functions ------------------
 
